@@ -1,9 +1,18 @@
 import express from "express";
+import mongoose from "mongoose";
+import Game from "./models/Games.js";
 const app = express();
+
+//Importando as rotas (endpoits) de Games
+import gameRoutes from "./routes/gameRoutes.js";
 
 // Configuração do Express
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use("/", gameRoutes);
+
+//INICIANDO CONEXÃO COM O BANCO DE DADOS DO MAONGODB
+mongoose.connect("mongodb://127.0.0.1:27017/api-thegames");
 
 //ROTA PRINCIPAL
 app.get("/", (req, res) => {
