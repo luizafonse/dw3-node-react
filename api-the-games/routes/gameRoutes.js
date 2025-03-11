@@ -5,4 +5,10 @@ import gameController from "../controllers/gameController.js";
 // Criando rota da api(ENDPOINT) endpoint para listar todos os games
 gameRoutes.get("/games", gameController.getAllGames);
 
+//endpoint para cadastrar um jogo
+gameRoutes.post("/games", gameController.createGame)
+
+//endpoint para excluir um jogo
+gameRoutes.delete("/games/:id", gameController.deleteGame)
+
 export default gameRoutes;
