@@ -37,8 +37,8 @@ const deleteGame = async (req, res) => {
       const id = req.params.id;
       gameService.Delete(id);
       res.sendStatus(204); //código 204 (no content)
-    } else{
-      res.sendStatus(400) //codigo 400 (bad request)
+    } else {
+      res.sendStatus(400); //codigo 400 (bad request)
       //requisiçao mal formada
     }
   } catch (error) {
@@ -47,4 +47,42 @@ const deleteGame = async (req, res) => {
   }
 };
 
-export default { getAllGames, createGame, deleteGame };
+//Função para alterar um jogo
+const updateGame = async (req, res) => {
+  try {
+    if (ObjectId.isValid(req.params.id)) {
+      const id = req.params.id;
+      //Desestruturação
+      const { title, platform, year, price } = req.body;
+      gameService.Update(id, title, platform, year, price);
+      res.sendStatus(200); // código 200 (OK) Requisição bem sucedida
+    } else {
+      res.sendStatus(400); // codigo de requisição mal formada (BAD REQUEST)
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Erro interno do servidor." });
+  }
+};
+
+//Função para buscar um unico jogo
+const getOneGame = async (req, res) => {
+  try {
+    if (ObjectId.isValid(req.params.id)) {
+      const id = req.params.id;
+      const game = await gameService.getOne(id);
+      if (!game) {
+        res.sendStatus(404); //NOT FOUND
+      } else {
+        res.status(200).json({ game });
+      }
+    } else {
+      res.sendStatus(400); // 400 bad request
+    }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500); // erro interno do servidor
+  }
+};
+
+export default { getAllGames, createGame, deleteGame, updateGame, getOneGame };
