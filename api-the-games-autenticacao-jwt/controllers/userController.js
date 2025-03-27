@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
       //Busca o usuario no banco
       const user = await userService.getOne(email);
       //usuario encontrado
-      if ((user != undefined)) {
+      if (user != undefined) {
         // Senha correta
         if (user.password == password) {
           //gerando o token
@@ -59,4 +59,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default { createUser, loginUser };
+export default { createUser, loginUser, JWTSecret };
