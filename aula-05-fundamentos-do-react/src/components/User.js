@@ -1,13 +1,14 @@
 const User = () => {
-
-    //Criando variáveis
-    const name = "Afonso";
+  // Criando variáveis
+  const name = "Diego";
   return (
     <>
       <div>
-        <p>Bem vindo, {name}</p>
+        {/* Expressão JSX */}
+        <p>Bem-vindo, {name}!</p>
       </div>
     </>
   );
 };
+
 export default User;

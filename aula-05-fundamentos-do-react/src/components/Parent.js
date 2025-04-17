@@ -4,7 +4,7 @@ const Parent = () => {
   return (
     <>
       <div>
-        <p>Este é o pai</p>
+        <p><strong>Este é o Componente Pai</strong></p>
         {/* Chamando o componente filho */}
         <Child />
       </div>
