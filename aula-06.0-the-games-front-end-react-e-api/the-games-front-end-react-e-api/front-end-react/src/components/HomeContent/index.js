@@ -3,16 +3,20 @@ import axios from "axios";
 import styles from "@/components/HomeContent/HomeContent.module.css";
 import Loading from "../Loading";
 import EditContent from "../EditContent";
- 
+import { axiosConfig } from "@/services/auth";
+
 const HomeContent = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGame, setSelectedGame] = useState(null);
- 
+
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/games");
+        const response = await axios.get(
+          "http://localhost:4000/games",
+          axiosConfig
+        );
         setGames(response.data.games);
         // console.log(response.data.games);
       } catch (error) {
@@ -23,12 +27,13 @@ const HomeContent = () => {
     };
     fetchGames();
   }, []);
- 
+
   // Função para DELETAR um jogo
   const deleteGame = async (gameId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/games/${gameId}`
+        `http://localhost:4000/games/${gameId}`,
+        axiosConfig
       );
       if (response.status === 204) {
         alert("O jogo foi excluído com sucesso.");
@@ -38,17 +43,25 @@ const HomeContent = () => {
       console.error(error);
     }
   };
- 
+
   // Função para ABRIR O MODAL de edição com os dados do jogo
   const openEditModal = (game) => {
     setSelectedGame(game);
   };
- 
+
   // Função para FECHAR O MODAL de edição
   const closeEditModal = () => {
     setSelectedGame(null);
   };
- 
+
+  //função para atualizar o jogo editado na lista
+  const handleUpdate = (updatedGame) => {
+    setGames(
+      games.map((game) => (game._id === updatedGame._id ? updatedGame : game))
+    );
+    closeEditModal();
+  };
+
   return (
     <>
       <div className={styles.homeContent}>
@@ -93,7 +106,7 @@ const HomeContent = () => {
                   >
                     Deletar
                   </button>
- 
+
                   {/* Botão de editar */}
                   <button
                     className={styles.btnEdit}
@@ -108,11 +121,15 @@ const HomeContent = () => {
         </div>
         {/* Renderização condicional */}
         {selectedGame && (
-          <EditContent game={selectedGame} onClose={closeEditModal} />
+          <EditContent
+            game={selectedGame}
+            onClose={closeEditModal}
+            handleUpdate={handleUpdate}
+          />
         )}
       </div>
     </>
   );
 };
- 
+
 export default HomeContent;

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "@/components/EditContent/EditContent.module.css";
 import axios from "axios";
+import { axiosConfig } from "@/services/auth";
 
-const EditContent = ({ onClose, game }) => {
+const EditContent = ({ onClose, game, handleUpdate }) => {
   // Criando os estados para as informações do jogo
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
@@ -43,10 +44,12 @@ const EditContent = ({ onClose, game }) => {
     try {
       const response = await axios.put(
         `http://localhost:4000/games/${id}`,
-        updatedGame
+        updatedGame, axiosConfig
       );
       if (response.status === 200) {
         alert("O jogo foi alterado com sucesso!");
+        //passa o jogo atualizado para a função handleUpdate para atualizar o estado
+        handleUpdate(response.data.game)
       }
     } catch (error) {
       console.log(error);
